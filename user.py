@@ -1,4 +1,5 @@
 from conn import conn
+from data import execute_query
 
 def check_token(token):
     
@@ -20,11 +21,11 @@ def get_uid_by_token(token):
     query = """
     SELECT user_id FROM users WHERE token = '{}';
     """.format(token)
-    
-    cursor = conn.cursor()
-    cursor.execute(query)
-    result = cursor.fetchall()[0][0]
-    cursor.close()
-    
-    return result
+
+    result = execute_query(query)
+
+    if result == []:
+        return None
+    else:
+        return result[0][0]
 

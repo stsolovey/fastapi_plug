@@ -4,11 +4,15 @@ import string
 import random
 
 def add_user(login, password):
-    
+    message = 'login {} is already taken'.format(login)
+    answer = {'status':False,'message':message}
     if check_login_if_exists(login):
-        return 'login {} is already taken'.format(login)
+        return answer
+
+    message = 'password is too short'
+    answer = {'status':False,'message':message}
     if password == '':
-        return 'password is too short'
+        return answer
     
     token = (random_string(190))
     hpass = hashpassword(password)
@@ -21,15 +25,17 @@ def add_user(login, password):
     cursor.execute(query)
     cursor.close()
     
-    return token
+    return {'status':True,'token':token}
 
 def autorisation(login, password):
+    message = 'login or password is incorrect'
+    answer = {'status':False,'message':message}
     
     if check_login_if_exists(login)==False:
-        return 'login or password is incorrect'
+        return answer
     
     if check_login_and_password_mach(login, password)==False:
-        return 'login or password is incorrect'
+        return answer
     
     token = (random_string(190))
     
@@ -44,7 +50,7 @@ def autorisation(login, password):
     cursor.execute(query)
     cursor.close()
     
-    return token
+    return {'status':True,'token':token}
 
     
 def check_login_if_exists(login):
